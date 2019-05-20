@@ -2,9 +2,13 @@ const express = require('express');
 const dotenv = require('dotenv');
 const bodyParser = require('body-parser');
 const OAuth2Server = require('oauth2-server');
+
+const model = require('./model');
+const middlewares = require('./middlewares');
+
 const Request = OAuth2Server.Request;
 const Response = OAuth2Server.Response;
-const model = require('./model');
+
 
 const app = express();
 
@@ -15,12 +19,14 @@ app.oauth = new OAuth2Server({
     allowBearerTokensInQueryString: true
 });
 
-// SECTION: Configure supporting modules for express
-app.use(bodyParser.urlencoded({ extended: false }));
+// SECTION: Configure supporting modules (middlewares) for express
 app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(middlewares.allowCrossDomain);
 
 // SECTION: Prepare functions
 const obtainToken = (req,res) => {
+    console.log( ' obtaining beaer')
     const request = new Request(req);
     const response = new Response(res);
 
