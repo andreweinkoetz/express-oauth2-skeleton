@@ -39,6 +39,7 @@ const getClient = (clientId, clientSecret) => {
 const saveToken = (token, client, user) => {
     console.log('getClient-function called');
 
+    // TODO: Get required user information into token
     token.client = {
         id: client.id
     };
@@ -53,7 +54,8 @@ const saveToken = (token, client, user) => {
 };
 
 const getAccessToken = (token) => {
-
+    console.log('in here');
+    console.log(token);
     const tokens = config.tokens.filter((savedToken) => savedToken.accessToken === token);
 
     return tokens[0];

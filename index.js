@@ -34,6 +34,20 @@ const obtainToken = (req,res) => {
         });
 };
 
+const authenticateRequest = (req, res, next) => {
+
+    const request = new Request(req);
+    const response = new Response(res);
+
+    return app.oauth.authenticate(request, response)
+        .then((token) => {
+            next();
+        }).catch((err) => {
+
+            res.status(err.code || 500).json(err);
+        });
+};
+
 // SECTION: Misc.
 dotenv.config();
 
@@ -42,6 +56,10 @@ app.all('/oauth/token', obtainToken);
 
 app.get('/', (req, res) => {
   return res.send('Received a GET HTTP method');
+});
+
+app.get('/secret', authenticateRequest, (req, res) => {
+    return res.send('Congrats you are in secret area');
 });
 
 app.post('/', (req, res) => {
