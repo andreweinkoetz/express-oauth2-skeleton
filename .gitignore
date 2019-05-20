@@ -22,6 +22,7 @@ package-lock.json
 .env.production.local
 
 # misc
+.idea
 
 # OS X
 .DS_Store*
