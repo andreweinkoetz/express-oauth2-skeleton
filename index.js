@@ -22,11 +22,13 @@ app.oauth = new OAuth2Server({
 // SECTION: Configure supporting modules (middlewares) for express
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
+app.use(middlewares.sneakers);
 app.use(middlewares.allowCrossDomain);
 
 // SECTION: Prepare functions
 const obtainToken = (req,res) => {
     console.log( ' obtaining beaer')
+    console.log( req.body )
     const request = new Request(req);
     const response = new Response(res);
 
@@ -41,7 +43,6 @@ const obtainToken = (req,res) => {
 };
 
 const authenticateRequest = (req, res, next) => {
-
     const request = new Request(req);
     const response = new Response(res);
 

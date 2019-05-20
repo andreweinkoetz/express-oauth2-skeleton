@@ -1,3 +1,9 @@
+const sneakers = (req, res, next) => {
+    const body = req.body;
+    const actualBody = Object.keys( body )[0];
+    req.body = actualBody;
+};
+
 const allowCrossDomain = (req, res, next) => {
     res.header('Access-Control-Allow-Origin', '*');
     res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS');
@@ -13,5 +19,6 @@ const allowCrossDomain = (req, res, next) => {
 };
 
 module.exports = {
+    sneakers,
     allowCrossDomain,
 }
