@@ -4,13 +4,13 @@ const config = {
         id: 'alexa',
         clientId: 'alexa',
         clientSecret: 'secret',
-        grants: ['password'],
+        grants: ['password', 'refresh_token'],
         redirectUris: []
     },{
         id: 'application',
         clientId: 'application',
         clientSecret: 'secret',
-        grants: ['password'],
+        grants: ['password', 'refresh_token'],
         redirectUris: []
     }],
 
@@ -54,15 +54,16 @@ const saveToken = (token, client, user) => {
 };
 
 const getAccessToken = (token) => {
-    console.log('in here');
-    console.log(token);
+    console.log("getAccessToken called")
+    // TODO: recap
     const tokens = config.tokens.filter((savedToken) => savedToken.accessToken === token);
 
     return tokens[0];
 };
 
 const getRefreshToken = (refreshToken) => {
-
+    console.log("getRefreshToken called")
+    // TODO: recap
     const tokens = config.tokens.filter((savedToken) => savedToken.refreshToken === refreshToken);
 
     if (!tokens.length) {
