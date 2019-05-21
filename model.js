@@ -1,5 +1,6 @@
 /* eslint-disable no-console */
 /* eslint-disable no-unused-vars */
+const lodash = require( 'lodash' );
 
 const config = {
     clients: [ {
@@ -40,8 +41,7 @@ const getClient = ( clientId, clientSecret ) => {
 const saveToken = ( token, client, user ) => {
     console.log( 'getClient-function called' );
 
-    // TODO deep copy instead
-    const savingToken = { ...token };
+    const savingToken = lodash.cloneDeep( token );
     // TODO: Get required user information into token
     savingToken.client = {
         id: client.id,
