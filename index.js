@@ -2,9 +2,9 @@ const express = require('express');
 const dotenv = require('dotenv');
 const bodyParser = require('body-parser');
 const OAuth2Server = require('oauth2-server');
+const cors = require('cors');
 
 const model = require('./model');
-const middlewares = require('./middlewares');
 
 const Request = OAuth2Server.Request;
 const Response = OAuth2Server.Response;
@@ -22,8 +22,7 @@ app.oauth = new OAuth2Server({
 // SECTION: Configure supporting modules (middlewares) for express
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
-app.use(middlewares.sneakers);
-app.use(middlewares.allowCrossDomain);
+app.use(cors());
 
 // SECTION: Prepare functions
 const obtainToken = (req,res) => {
