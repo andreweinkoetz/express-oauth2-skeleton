@@ -1,12 +1,35 @@
 # foodoo-backend
 
-## Packages used:
+## Getting started
+
+### `npm install``
+
+Install all third party dependencies. Below you can find a small summary of the most important packages that we use and a small description for why we need them. See `package.json` for more information.
+
+#### Packages used:
+
 - `express`
 - ~~`express-oauth-server`~~ replaced by `oauth2-server` (no further development for express wrapper)
-- `dotenv`
-- `body-parser`
+- `dotenv` - to quickly read secret variables from .env files via `process.env.VAR_NAME`
+- `body-parser` 
+- `crons` - express middleware to allow cross-domain-requests
+
+### setup .env
+
+Create a new file called `.env` and copy the template from `EXAMPLE.env`. Ask your co-contributors for the secrets and save them to your .env file. Please make sure that you keep the .env file private and do not share the information in the file with anyone. Do not add `.env` to git! 
+
+### `npm run lint`
+
+We use eslint to verify that we are all on the same page when it comes to code formatting. Use `npm run lint` to check if you pass all linting requirements. For a detailled description how to setup eslint, please see the Foodoo-Frontend (README.md)[https://github.com/andrelandgraf/foodoo-frontend/blob/master/README.md]
+
+### `npm run dev`
+
+This will start the development server on localhost. Please make sure that you have set the Port within the `.env` file. e.g. `PORT=3333`
 
 ## Usage of OAuth2
+
+We use OAuth2 specs to authenticate our Alexa Skill with users from our express backend. Also, our React frontend also uses OAuth2 to login users. OAuth is quite a topic, so below you can find useful information to get started with the logic. 
+
 ### Obtaining new bearer token
 For obtaining a new bearer token only the `password` grant of the [RFC6749](https://tools.ietf.org/html/rfc6749) is implemented. To obtain a new, valid token you have to provide the following information:
 
