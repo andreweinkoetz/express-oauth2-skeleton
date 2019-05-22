@@ -3,7 +3,7 @@
  * @param {string} property
  * @returns {boolean}
  */
-export const missesProperty = ( body, property ) => !Object.prototype
+const missesProperty = ( body, property ) => !Object.prototype
     .hasOwnProperty.call( body, property );
 
 /**
@@ -11,7 +11,7 @@ export const missesProperty = ( body, property ) => !Object.prototype
  * @param {Array} property
  * @returns {boolean}
  */
-export const missingProperties = ( body, properties ) => {
+const missingProperties = ( body, properties ) => {
     for ( let i = 0; i < properties.length; i += 1 ) {
         if ( missesProperty( body, properties[ i ] ) ) return properties[ i ];
     }
@@ -23,7 +23,7 @@ export const missingProperties = ( body, properties ) => {
  * @param {string} property
  * @returns {json}
  */
-export const sendBadRequestErrorMissingProperty = ( res, property ) => res.status( 400 )
+const sendBadRequestErrorMissingProperty = ( res, property ) => res.status( 400 )
     .json( {
         error: 'Bad Request',
         message: `The request body must contain a ${ property } property`,
@@ -34,8 +34,15 @@ export const sendBadRequestErrorMissingProperty = ( res, property ) => res.statu
  * @param {string} username
  * @returns {json}
  */
-export const sendBadRequestErrorUsernameTaken = ( res, username ) => res.status( 400 )
+const sendBadRequestErrorUsernameTaken = ( res, username ) => res.status( 400 )
     .json( {
         error: 'Bad Request',
         message: `The ${ username } is already taken`,
     } );
+
+module.exports = {
+    missesProperty,
+    missingProperties,
+    sendBadRequestErrorMissingProperty,
+    sendBadRequestErrorUsernameTaken,
+};
