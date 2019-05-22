@@ -1,35 +1,22 @@
 /* eslint-disable no-console */
 /* eslint-disable no-unused-vars */
+/* eslint-disable no-underscore-dangle */
 const lodash = require( 'lodash' );
-
-const config = {
-    clients: [ {
-        id: 'alexa',
-        clientId: 'alexa',
-        clientSecret: 'secret',
-        grants: [ 'password', 'refresh_token' ],
-        redirectUris: [],
-    }, {
-        id: 'application',
-        clientId: 'application',
-        clientSecret: 'secret',
-        grants: [ 'password', 'refresh_token' ],
-        redirectUris: [],
-    } ],
-
-    tokens: [],
-};
-
+const UserModel = require( './models/user' );
+const ClientModel = require( './models/client' );
+const TokenModel = require( './models/token' );
+const config = require( './config' );
 
 const getUser = ( username, password ) => {
     console.log( 'getUser-function called' );
-    // TODO: check user credentials from db
-    const user = {
-        id: 'id3009',
-        email: 'andre.weinkoetz@tum.de',
-    };
-
-    return user;
+    return UserModel.findOne( { username } ).then( ( user ) => {
+        if ( user ) {
+            if ( user.password === password ) {
+                return user;
+            }
+        }
+        return undefined;
+    } );
 };
 
 const getClient = ( clientId, clientSecret ) => {
@@ -39,18 +26,26 @@ const getClient = ( clientId, clientSecret ) => {
 };
 
 const saveToken = ( token, client, user ) => {
-    console.log( 'getClient-function called' );
+    console.log( 'saveToken-function called' );
 
     const savingToken = lodash.cloneDeep( token );
-    // TODO: Get required user information into token
-    savingToken.client = {
-        id: client.id,
-    };
 
-    savingToken.user = {
-        id: user.id,
-        email: user.email,
-    };
+    TokenModel.create( savingToken ).then( ( savedToken ) => {
+        UserModel.findOne( { username: user.username } )
+            .then( u => u._id )
+            .then( ( userId ) => {
+                ClientModel.findOne( { id: client.id } ).then( ( c ) => {
+                    /* eslint-disable-next-line no-param-reassign */
+                    savedToken.user = user._id;
+                    /* eslint-disable-next-line no-param-reassign */
+                    savedToken.client = client._id;
+                    savedToken.save();
+                } );
+            } );
+    } );
+
+    savingToken.user = user;
+    savingToken.client = client;
 
     config.tokens.push( savingToken );
     return savingToken;
@@ -58,7 +53,7 @@ const saveToken = ( token, client, user ) => {
 
 const getAccessToken = ( token ) => {
     console.log( 'getAccessToken called' );
-    // TODO: recap
+
     const tokens = config.tokens.filter( savedToken => savedToken.accessToken === token );
 
     return tokens[ 0 ];
@@ -73,13 +68,11 @@ const getRefreshToken = ( refreshToken ) => {
         return undefined;
     }
 
-    const token = Object.assign( {}, tokens[ 0 ] );
-    token.user.username = token.user.id;
-
-    return token;
+    return tokens[ 0 ];
 };
 
 const revokeToken = ( token ) => {
+    // TODO: recap
     config.tokens = config.tokens
         .filter( savedToken => savedToken.refreshToken !== token.refreshToken );
 

@@ -1,69 +1,27 @@
-const express = require( 'express' );
+/* eslint-disable no-console */
 const dotenv = require( 'dotenv' );
-const bodyParser = require( 'body-parser' );
-const OAuth2Server = require( 'oauth2-server' );
-const cors = require( 'cors' );
+const mongoose = require( 'mongoose' );
+const { app } = require( './src/middlewares' );
+const config = require( './src/config' );
+const auth = require( './src/routes/auth' );
+const TokenModel = require( './src/models/token' );
+const ClientModel = require( './src/models/client' );
 
-const model = require( './model' );
-
-const { Request, Response } = OAuth2Server;
-
-
-const app = express();
-
-// SECTION: Configure OAuth2
-app.oauth = new OAuth2Server( {
-    model,
-    accessTokenLifetime: 60 * 60,
-    allowBearerTokensInQueryString: true,
-} );
-
-// SECTION: Configure supporting modules (middlewares) for express
-app.use( bodyParser.json() );
-app.use( bodyParser.urlencoded( { extended: false } ) );
-app.use( cors() );
-
-// SECTION: Prepare functions
-const obtainToken = ( req, res ) => {
-    const request = new Request( req );
-    const response = new Response( res );
-
-    return app.oauth.token( request, response )
-        .then( ( token ) => {
-            res.json( token );
-        } ).catch( ( err ) => {
-            res.status( err.code || 500 ).json( err );
-        } );
-};
-
-const authenticateRequest = ( req, res, next ) => {
-    const request = new Request( req );
-    const response = new Response( res );
-
-    return app.oauth.authenticate( request, response )
-        // eslint-disable-next-line no-unused-vars
-        .then( ( token ) => {
-            next();
-        } ).catch( ( err ) => {
-            res.status( err.code || 500 ).json( err );
-        } );
-};
 
 // SECTION: Misc.
 dotenv.config();
+mongoose.set( 'useCreateIndex', true );
 
 // SECTION: route config
-app.all( '/oauth/token', obtainToken );
-
 app.get( '/', ( req, res ) => res.send( 'Received a GET HTTP method' ) );
+app.use( '/auth', auth );
 
-app.get( '/secret', authenticateRequest, ( req, res ) => res.send( 'Congrats you are in secret area' ) );
-
-app.post( '/', ( req, res ) => res.send( 'Received a POST HTTP method' ) );
-
-app.put( '/', ( req, res ) => res.send( 'Received a PUT HTTP method' ) );
-
-app.delete( '/', ( req, res ) => res.send( 'Received a DELETE HTTP method' ) );
-
-// Start server
-app.listen( process.env.PORT, () => console.log( `Froodo backend listening on port ${ process.env.PORT }!` ) );
+mongoose.connect( process.env.MONGODB_URI, { useNewUrlParser: true } ).then( () => {
+    TokenModel.find().populate( 'user' ).populate( 'client' ).then( ( tokens ) => { config.tokens = tokens; } )
+        .then( () => {
+            ClientModel.find().then( ( clients ) => { config.clients = clients; } ).then( () => {
+            // Start server
+                app.listen( process.env.PORT, () => console.log( `Froodo backend listening on port ${ process.env.PORT }!` ) );
+            } );
+        } );
+} );
