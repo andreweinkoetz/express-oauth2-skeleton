@@ -2,6 +2,7 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable no-underscore-dangle */
 const lodash = require( 'lodash' );
+const bcrypt = require( 'bcrypt' );
 
 const UserModel = require( './models/user' );
 const ClientModel = require( './models/client' );
@@ -13,7 +14,7 @@ const getUser = ( username, password ) => {
 
     return UserModel.findOne( { username } ).then( ( user ) => {
         if ( user ) {
-            if ( user.password === password ) {
+            if ( bcrypt.compareSync( password, user.password ) ) {
                 return user;
             }
         }
