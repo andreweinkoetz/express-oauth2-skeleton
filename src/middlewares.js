@@ -2,7 +2,7 @@ const express = require( 'express' );
 const bodyParser = require( 'body-parser' );
 const OAuth2Server = require( 'oauth2-server' );
 const cors = require( 'cors' );
-const model = require( './model' );
+const oauthModel = require( './oauth' );
 
 const { Request, Response } = OAuth2Server;
 
@@ -10,7 +10,7 @@ const app = express();
 
 // SECTION: Configure OAuth2
 app.oauth = new OAuth2Server( {
-    model,
+    model: oauthModel,
     accessTokenLifetime: 60 * 60,
     allowBearerTokensInQueryString: true,
 } );

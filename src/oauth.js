@@ -2,7 +2,6 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable no-underscore-dangle */
 const lodash = require( 'lodash' );
-const bcrypt = require( 'bcrypt' );
 
 const UserModel = require( './models/user' );
 const ClientModel = require( './models/client' );
@@ -11,9 +10,10 @@ const config = require( './config' );
 
 const getUser = ( username, password ) => {
     console.log( 'getUser-function called' );
+
     return UserModel.findOne( { username } ).then( ( user ) => {
         if ( user ) {
-            if ( user.password === bcrypt.hashSync( password, 8 ) ) {
+            if ( user.password === password ) {
                 return user;
             }
         }
