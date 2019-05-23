@@ -1,7 +1,7 @@
 {
-  "name": "foodoo-backend",
+  "name": "express-oauth2-skeleton",
   "version": "1.0.0",
-  "description": "The backend for the Foodoo Application",
+  "description": "A express.js oauth2 skeleton app that has you covered with all basic oauth functionality!",
   "main": "index.js",
   "scripts": {
     "dev": "node index",
@@ -10,21 +10,21 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/andrelandgraf/foodoo-backend.git"
+    "url": "git+https://github.com/andrelandgraf/express-oauth2-skeleton.git"
   },
   "keywords": [
-    "Food",
-    "Frodo",
-    "Nutrition",
+    "OAuth",
+    "Express",
+    "Node",
     "API",
     "Backend"
   ],
-  "author": "Andre Landgraf",
+  "author": "Andre Landgraf and Andre Weinkötz",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/andrelandgraf/foodoo-backend/issues"
+    "url": "https://github.com/andrelandgraf/express-oauth2-skeleton/issues"
   },
-  "homepage": "https://github.com/andrelandgraf/foodoo-backend#readme",
+  "homepage": "https://github.com/andrelandgraf/express-oauth2-skeleton#readme",
   "dependencies": {
     "bcrypt": "^3.0.6",
     "body-parser": "^1.19.0",

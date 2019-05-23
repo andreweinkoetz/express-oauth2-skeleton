@@ -1,4 +1,10 @@
-# foodoo-backend
+# express-oauth2-skeleton
+
+## What is this repository for?
+
+This repository provides a skeleton api that you can fork to quick-start your own express app! 
+
+Find the corresponding react-oauth2-skeleton (here)[https://github.com/andrelandgraf/react-oauth2-skeleton]. 
 
 ## Getting started
 
@@ -30,7 +36,7 @@ Create a new file called `.env` and copy the template from `EXAMPLE.env`. Ask yo
 
 ### `npm run lint`
 
-We use eslint to verify that we are all on the same page when it comes to code formatting. Use `npm run lint` to check if you pass all linting requirements. For a detailled description how to setup eslint, please see the Foodoo-Frontend (README.md)[https://github.com/andrelandgraf/foodoo-frontend/blob/master/README.md]
+We use eslint to verify that we are all on the same page when it comes to code formatting. Use `npm run lint` to check if you pass all linting requirements. For a detailled description how to setup eslint, please see the react-oauth2-skeleton repository (README.md)[https://github.com/andrelandgraf/react-oauth2-skeleton/master/README.md]
 
 ### `npm run dev`
 
@@ -38,7 +44,7 @@ This will start the development server on localhost. Please make sure that you h
 
 ## Usage of OAuth2
 
-We use OAuth2 specs to authenticate our Alexa Skill with users from our express backend. Also, our React frontend also uses OAuth2 to login users. OAuth is quite a topic, so below you can find useful information to get started with the logic. 
+We use OAuth2 specs to authenticate our frontend and even third party services (e.g. a Alexa skill) with users from our express backend. Also, our React frontend also uses OAuth2 to login users. OAuth is quite a topic, so below you can find useful information to get started with the logic. 
 
 ### Obtaining new bearer token
 For obtaining a new bearer token only the `password` grant of the [RFC6749](https://tools.ietf.org/html/rfc6749) is implemented. To obtain a new, valid token you have to provide the following information:
@@ -67,7 +73,7 @@ For testing the examples please make sure you have `curl` installed on your mach
 ```
 curl http://localhost:3000/oauth/token \
 	-d "grant_type=password" \
-	-d "username=<andrew>" \
+	-d "username=<username>" \
 	-d "password=<verysecret>" \
 	-H "Authorization: Basic YWxleGE6c2VjcmV0" \
 	-H "Content-Type: application/x-www-form-urlencoded"
@@ -80,7 +86,7 @@ Should result in something like this:
 "refreshToken":"47780f03558fa30d9d90872a1082795bd8693c67",
 "refreshTokenExpiresAt":"2019-06-03T10:22:34.294Z", 
 "client":{"id":"alexa"}, 
-"user": {"id":"id3009","email":"andre.weinkoetz@tum.de"}
+"user": {"id":"id3009","email":"<email-address>"}
 }
 ```
 
