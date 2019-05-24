@@ -21,7 +21,7 @@ mongoose.connect( process.env.MONGODB_URI, { useNewUrlParser: true } ).then( () 
         .then( () => {
             ClientModel.find().then( ( clients ) => { config.clients = clients; } ).then( () => {
             // Start server
-                app.listen( process.env.PORT, () => console.log( `Froodo backend listening on port ${ process.env.PORT }!` ) );
+                app.listen( process.env.PORT, () => console.log( `Express backend listening on port ${ process.env.PORT }!` ) );
             } );
         } );
 } );
