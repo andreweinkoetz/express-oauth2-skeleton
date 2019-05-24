@@ -71,7 +71,7 @@ For testing the examples please make sure you have `curl` installed on your mach
 
 ###### Obtaining a new token:
 ```
-curl http://localhost:3000/oauth/token \
+curl http://localhost:3333/oauth/token \
 	-d "grant_type=password" \
 	-d "username=<username>" \
 	-d "password=<verysecret>" \
@@ -85,15 +85,14 @@ Should result in something like this:
 "accessTokenExpiresAt":"2019-05 20T11:22:34.292Z", 
 "refreshToken":"47780f03558fa30d9d90872a1082795bd8693c67",
 "refreshTokenExpiresAt":"2019-06-03T10:22:34.294Z", 
-"client":{"id":"alexa"}, 
-"user": {"id":"id3009","email":"<email-address>"}
+"client": <Your client object>, 
+"user": <Your user object>
 }
 ```
 
 ###### Using token to authenticate:
 ```
-curl http://localhost:3000/secret \
+curl http://localhost:3333/auth/me \
 	-H "Authorization: Bearer 4ca38497aa7e75b4b144933e6eaf744925b23831"
 ```
-To receive this:
-`Congrats you are in secret area`
+To receive your user object.
