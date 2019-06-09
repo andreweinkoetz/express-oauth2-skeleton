@@ -96,3 +96,12 @@ curl http://localhost:3333/auth/me \
 	-H "Authorization: Bearer 4ca38497aa7e75b4b144933e6eaf744925b23831"
 ```
 To receive your user object.
+
+###### AWS Elastic Beanstalk deployment
+In order to deploy to AWS EB make sure to have a `.npmrc` file in the root folder of the project. This is necessary for `bcrypt`: [see here](https://github.com/kelektiv/node.bcrypt.js/wiki/Installation-Instructions) for details.
+Content of file:
+```
+# Force npm to run node-gyp also as root, preventing permission denied errors in AWS with npm@5 or @6
+unsafe-perm=true
+
+```
