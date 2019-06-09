@@ -3,13 +3,13 @@ const config = {
         id: 'alexa',
         clientId: 'alexa',
         clientSecret: process.env.ALEXA_CLIENT_SECRET,
-        grants: [ 'password', 'refresh_token' ],
-        redirectUris: [],
+        grants: [ 'password', 'refresh_token', 'authorization_code' ],
+        redirectUris: [ 'https://www.google.de' ],
     }, {
         id: 'application',
         clientId: 'application',
         clientSecret: process.env.APP_CLIENT_SECRET,
-        grants: [ 'password', 'refresh_token' ],
+        grants: [ 'password', 'refresh_token', 'authorization_code' ],
         redirectUris: [],
     } ],
 

@@ -24,8 +24,9 @@ const getUser = ( username, password ) => {
 
 const getClient = ( clientId, clientSecret ) => {
     console.log( 'getClient-function called' );
+    console.log( config.clients[ 1 ] );
     // TODO: Check clientId and secret
-    return config.clients[ 0 ];
+    return config.clients.find( client => client.id === clientId );
 };
 
 const saveToken = ( token, client, user ) => {
@@ -62,6 +63,16 @@ const getAccessToken = ( token ) => {
     return tokens[ 0 ];
 };
 
+const getAuthorizationCode = ( authorizationCode ) => {
+    const code = {
+        code: 'hahahaha',
+        expiresAt: new Date(),
+        client: config.clients[ 1 ],
+        user: { name: ' andre' },
+    };
+    return code;
+};
+
 const getRefreshToken = ( refreshToken ) => {
     console.log( 'getRefreshToken called' );
     // TODO: recap
@@ -73,6 +84,8 @@ const getRefreshToken = ( refreshToken ) => {
 
     return tokens[ 0 ];
 };
+
+const revokeAuthorizationCode = code => true;
 
 const revokeToken = ( token ) => {
     // TODO: recap
@@ -93,4 +106,6 @@ module.exports = {
     getAccessToken,
     getRefreshToken,
     revokeToken,
+    getAuthorizationCode,
+    revokeAuthorizationCode,
 };
