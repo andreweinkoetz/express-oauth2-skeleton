@@ -9,7 +9,10 @@ const ClientModel = require( './src/models/client' );
 
 
 // SECTION: Misc.
-dotenv.config();
+if ( !process.env.IS_PROD ) {
+    dotenv.config();
+}
+
 mongoose.set( 'useCreateIndex', true );
 
 // SECTION: route config
