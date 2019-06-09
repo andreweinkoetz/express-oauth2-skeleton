@@ -97,7 +97,7 @@ curl http://localhost:3333/auth/me \
 ```
 To receive your user object.
 
-###### AWS Elastic Beanstalk deployment
+## AWS Elastic Beanstalk deployment
 In order to deploy to AWS EB make sure to have a `.npmrc` file in the root folder of the project. This is necessary for `bcrypt`: [see here](https://github.com/kelektiv/node.bcrypt.js/wiki/Installation-Instructions) for details.
 Content of file:
 ```
