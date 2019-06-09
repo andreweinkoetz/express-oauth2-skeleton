@@ -4,6 +4,7 @@
   "description": "A express.js oauth2 skeleton app that has you covered with all basic oauth functionality!",
   "main": "index.js",
   "scripts": {
+    "start": "node index.js",
     "dev": "node index",
     "test": "echo \"Error: no test specified\" && exit 1",
     "lint": "eslint ."
