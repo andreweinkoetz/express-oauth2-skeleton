@@ -34,6 +34,7 @@ const obtainToken = ( req, res ) => {
 };
 
 const authorize = ( req, res ) => {
+    console.log( req.headers );
     const request = new Request( req );
     const response = new Response( res );
 

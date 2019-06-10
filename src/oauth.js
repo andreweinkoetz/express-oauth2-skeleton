@@ -30,38 +30,30 @@ const getClient = async ( clientId, clientSecret ) => {
     return client;
 };
 
-const saveToken = ( token, client, user ) => {
+const saveToken = async ( token, client, user ) => {
     console.log( 'saveToken-function called' );
 
     const savingToken = lodash.cloneDeep( token );
+    savingToken.user = user._id;
+    savingToken.client = client._id;
 
-    TokenModel.create( savingToken ).then( ( savedToken ) => {
-        UserModel.findOne( { username: user.username } ).exec()
-            .then( u => u._id )
-            .then( ( userId ) => {
-                ClientModel.findOne( { id: client.id } ).then( ( c ) => {
-                    /* eslint-disable-next-line no-param-reassign */
-                    savedToken.user = user._id;
-                    /* eslint-disable-next-line no-param-reassign */
-                    savedToken.client = client._id;
-                    savedToken.save();
-                } );
-            } );
-    } );
+    await TokenModel.create( savingToken );
 
-    savingToken.user = user;
-    savingToken.client = client;
+    const returnToken = lodash.cloneDeep( token );
+    returnToken.user = user;
+    returnToken.client = client;
 
-    return savingToken;
+    return returnToken;
 };
 
 const getAccessToken = async ( accessToken ) => {
     console.log( 'getAccessToken called' );
-    console.log( ' this is new version ' );
+    console.log( accessToken );
 
-    const token = await TokenModel.findOne( { accessToken } ).populate( 'user' ).exec();
+    const token = await TokenModel.findOne( { accessToken } ).populate( 'user' ).populate( 'client' ).exec();
 
     token.user.password = undefined;
+    console.log( token );
 
     return token;
 };
