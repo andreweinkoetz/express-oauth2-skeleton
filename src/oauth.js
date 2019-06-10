@@ -57,6 +57,7 @@ const saveToken = ( token, client, user ) => {
 
 const getAccessToken = async ( accessToken ) => {
     console.log( 'getAccessToken called' );
+    console.log( ' this is new version ' );
 
     const token = await TokenModel.findOne( { accessToken } ).populate( 'user' ).exec();
 
