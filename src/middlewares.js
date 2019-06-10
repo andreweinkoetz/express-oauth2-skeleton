@@ -33,6 +33,17 @@ const obtainToken = ( req, res ) => {
         } );
 };
 
+const authorize = ( req, res ) => {
+    const request = new Request( req );
+    const response = new Response( res );
+
+    return app.oauth.authorize( request, response ).then( ( token ) => {
+        res.json( token );
+    } ).catch( ( err ) => {
+        res.status( err.code || 500 ).json( err );
+    } );
+};
+
 const checkAuthentication = ( req, res, next ) => {
     const request = new Request( req );
     const response = new Response( res );
@@ -51,6 +62,7 @@ const checkAuthentication = ( req, res, next ) => {
 
 module.exports = {
     app,
+    authorize,
     obtainToken,
     checkAuthentication,
 };

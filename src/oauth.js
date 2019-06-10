@@ -7,26 +7,27 @@ const bcrypt = require( 'bcrypt' );
 const UserModel = require( './models/user' );
 const ClientModel = require( './models/client' );
 const TokenModel = require( './models/token' );
-const config = require( './config' );
+const CodeModel = require( './models/code' );
 
-const getUser = ( username, password ) => {
+
+const getUser = async ( username, password ) => {
     console.log( 'getUser-function called' );
 
-    return UserModel.findOne( { username } ).then( ( user ) => {
-        if ( user ) {
-            if ( bcrypt.compareSync( password, user.password ) ) {
-                return user;
-            }
-        }
-        return undefined;
-    } );
+    const user = await UserModel.findOne( { username } ).exec();
+    const validPassword = user && bcrypt.compareSync( password, user.password );
+    user.password = undefined;
+    return validPassword ? user : undefined;
 };
 
-const getClient = ( clientId, clientSecret ) => {
+const getClient = async ( clientId, clientSecret ) => {
     console.log( 'getClient-function called' );
-    console.log( config.clients[ 1 ] );
-    // TODO: Check clientId and secret
-    return config.clients.find( client => client.id === clientId );
+
+    // Checks if there's a clientId with matching clientSecret.
+    const client = await ClientModel.findOne( { clientId } ).exec();
+    if ( clientSecret ) {
+        return client && ( client.clientSecret === clientSecret ) ? client : undefined;
+    }
+    return client;
 };
 
 const saveToken = ( token, client, user ) => {
@@ -35,7 +36,7 @@ const saveToken = ( token, client, user ) => {
     const savingToken = lodash.cloneDeep( token );
 
     TokenModel.create( savingToken ).then( ( savedToken ) => {
-        UserModel.findOne( { username: user.username } )
+        UserModel.findOne( { username: user.username } ).exec()
             .then( u => u._id )
             .then( ( userId ) => {
                 ClientModel.findOne( { id: client.id } ).then( ( c ) => {
@@ -51,51 +52,62 @@ const saveToken = ( token, client, user ) => {
     savingToken.user = user;
     savingToken.client = client;
 
-    config.tokens.push( savingToken );
     return savingToken;
 };
 
-const getAccessToken = ( token ) => {
+const getAccessToken = async ( accessToken ) => {
     console.log( 'getAccessToken called' );
 
-    const tokens = config.tokens.filter( savedToken => savedToken.accessToken === token );
+    const token = await TokenModel.findOne( { accessToken } ).populate( 'user' ).exec();
 
-    return tokens[ 0 ];
+    token.user.password = undefined;
+
+    return token;
 };
 
-const getAuthorizationCode = ( authorizationCode ) => {
-    const code = {
-        code: 'hahahaha',
-        expiresAt: new Date(),
-        client: config.clients[ 1 ],
-        user: { name: ' andre' },
-    };
+const getAuthorizationCode = async ( authorizationCode ) => {
+    console.log( 'getAuthorizationCode called' );
+
+    const code = await CodeModel.findOne( { authorizationCode } ).populate( 'client' ).exec();
+
     return code;
 };
 
-const getRefreshToken = ( refreshToken ) => {
-    console.log( 'getRefreshToken called' );
-    // TODO: recap
-    const tokens = config.tokens.filter( savedToken => savedToken.refreshToken === refreshToken );
+const saveAuthorizationCode = async ( code, client, user ) => {
+    console.log( 'saveAuthorizationCode called' );
 
-    if ( !tokens.length ) {
-        return undefined;
-    }
+    const savingCode = lodash.cloneDeep( code );
+    savingCode.client = client._id;
+    savingCode.user = user._id;
 
-    return tokens[ 0 ];
+    CodeModel.create( savingCode );
+
+    return code;
 };
 
-const revokeAuthorizationCode = code => true;
+const getRefreshToken = async ( refreshToken ) => {
+    console.log( 'getRefreshToken called' );
 
-const revokeToken = ( token ) => {
-    // TODO: recap
-    config.tokens = config.tokens
-        .filter( savedToken => savedToken.refreshToken !== token.refreshToken );
+    // Check if this refresh token exists.
+    const token = await TokenModel.findOne( { refreshToken } ).populate( 'user' ).populate( 'client' ).exec();
 
-    const revokedTokensFound = config.tokens
-        .filter( savedToken => savedToken.refreshToken === token.refreshToken );
+    return ( new Date() > token.refreshTokenExpiresAt ) ? undefined : token;
+};
 
-    return !revokedTokensFound.length;
+const revokeAuthorizationCode = async ( authorizationCode ) => {
+    console.log( 'revokeAuthorizationCode called' );
+    const removedCode = await CodeModel.findOneAndDelete( { authorizationCode } ).exec();
+
+    return !!removedCode;
+};
+
+const revokeToken = async ( token ) => {
+    console.log( 'RevokeToken called' );
+
+    const removedToken = await TokenModel
+        .findOneAndDelete( { refreshToken: token.refreshToken } ).exec();
+
+    return !!removedToken;
 };
 
 
@@ -103,6 +115,7 @@ module.exports = {
     getUser,
     getClient,
     saveToken,
+    saveAuthorizationCode,
     getAccessToken,
     getRefreshToken,
     revokeToken,
