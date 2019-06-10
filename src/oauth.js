@@ -63,6 +63,8 @@ const getAccessToken = async ( accessToken ) => {
 
     token.user.password = undefined;
 
+    console.log( token );
+
     return token;
 };
 
