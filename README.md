@@ -105,3 +105,5 @@ Content of file:
 unsafe-perm=true
 
 ```
+The folder `.ebextensions` contains the node command to start up the application on AWS EB. Will be removed after forking.
+
