@@ -48,14 +48,10 @@ const saveToken = async ( token, client, user ) => {
 
 const getAccessToken = async ( accessToken ) => {
     console.log( 'getAccessToken called' );
-    console.log( accessToken );
 
     const token = await TokenModel.findOne( { accessToken } ).populate( 'user' ).populate( 'client' ).exec();
 
     token.user.password = undefined;
-    console.log( token );
-
-    console.log( token );
 
     return token;
 };
@@ -89,9 +85,12 @@ const getRefreshToken = async ( refreshToken ) => {
     return ( new Date() > token.refreshTokenExpiresAt ) ? undefined : token;
 };
 
-const revokeAuthorizationCode = async ( authorizationCode ) => {
+const revokeAuthorizationCode = async ( code ) => {
     console.log( 'revokeAuthorizationCode called' );
-    const removedCode = await CodeModel.findOneAndDelete( { authorizationCode } ).exec();
+
+    const removedCode = await CodeModel
+        .findOneAndDelete( { authorizationCode: code.authorizationCode } )
+        .exec();
 
     return !!removedCode;
 };
