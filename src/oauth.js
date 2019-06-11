@@ -9,6 +9,15 @@ const ClientModel = require( './models/client' );
 const TokenModel = require( './models/token' );
 const CodeModel = require( './models/code' );
 
+const convertTokenAlexa = async ( token ) => {
+    console.log( 'Converting token for Alexa ...' );
+    const alexaToken = lodash.cloneDeep( token );
+    alexaToken.client = undefined;
+    alexaToken.user = undefined;
+    alexaToken.expiresIn = token.accessTokenExpiresAt.getTime() - new Date().getTime();
+    alexaToken.tokenType = 'Bearer';
+    return alexaToken;
+};
 
 const getUser = async ( username, password ) => {
     console.log( 'getUser-function called' );
@@ -42,6 +51,10 @@ const saveToken = async ( token, client, user ) => {
     const returnToken = lodash.cloneDeep( token );
     returnToken.user = user;
     returnToken.client = client;
+
+    if ( client.clientId === 'alexa' ) {
+        return convertTokenAlexa( returnToken );
+    }
 
     return returnToken;
 };
@@ -103,7 +116,6 @@ const revokeToken = async ( token ) => {
 
     return !!removedToken;
 };
-
 
 module.exports = {
     getUser,

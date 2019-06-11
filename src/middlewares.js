@@ -32,9 +32,6 @@ const obtainToken = ( req, res ) => {
 
     return app.oauth.token( request, response )
         .then( ( token ) => {
-            token.token_type = 'Bearer';
-            token.access_token = token.accessToken;
-            token.expires_in = 34587634;
             console.log( token );
             res.json( token );
         } ).catch( ( err ) => {
