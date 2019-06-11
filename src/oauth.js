@@ -12,12 +12,10 @@ const CodeModel = require( './models/code' );
 const convertTokenAlexa = async ( token ) => {
     console.log( 'Converting token for Alexa ...' );
     const alexaToken = lodash.cloneDeep( token );
-    // alexaToken.client = undefined;
-    alexaToken.user.password = undefined;
     alexaToken.access_token = alexaToken.accessToken;
-    alexaToken.accessToken = undefined;
+    // alexaToken.accessToken = undefined;
     alexaToken.refresh_token = alexaToken.refreshToken;
-    alexaToken.refreshToken = undefined;
+    // alexaToken.refreshToken = undefined;
     alexaToken.expires_in = token.accessTokenExpiresAt.getTime() - new Date().getTime();
     alexaToken.token_type = 'Bearer';
     return alexaToken;
