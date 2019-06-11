@@ -44,7 +44,7 @@ const authorize = ( req, res ) => {
     const response = new Response( res );
 
     console.log( 'REQUEST::::::AUTHORIZE' );
-    console.log( req.headers.referer );
+    console.log( request );
     console.log( 'REQUEST::::::AUTHORIZE' );
 
     return app.oauth.authorize( request, response ).then( ( token ) => {
