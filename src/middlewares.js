@@ -1,3 +1,4 @@
+/* eslint-disable no-param-reassign */
 const express = require( 'express' );
 const bodyParser = require( 'body-parser' );
 const OAuth2Server = require( 'oauth2-server' );
@@ -31,7 +32,8 @@ const obtainToken = ( req, res ) => {
 
     return app.oauth.token( request, response )
         .then( ( token ) => {
-            console.log( res.url );
+            token.tokenType = 'Bearer';
+            console.log( token );
             res.json( token );
         } ).catch( ( err ) => {
             res.status( err.code || 500 ).json( err );
