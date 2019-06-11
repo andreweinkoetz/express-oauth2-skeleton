@@ -34,7 +34,7 @@ const obtainToken = ( req, res ) => {
         .then( ( token ) => {
             token.token_type = 'Bearer';
             token.access_token = token.accessToken;
-            token.expires_in = token.accessTokenExpiresAt;
+            token.expires_in = 34587634;
             console.log( token );
             res.json( token );
         } ).catch( ( err ) => {
