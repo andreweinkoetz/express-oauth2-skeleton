@@ -42,11 +42,11 @@ const obtainToken = ( req, res ) => {
 const authorize = ( req, res ) => {
     const request = new Request( req );
     const response = new Response( res );
-    /*
+
     console.log( 'REQUEST::::::AUTHORIZE' );
     console.log( request.query );
     console.log( 'REQUEST::::::AUTHORIZE' );
-    */
+
     return app.oauth.authorize( request, response ).then( ( token ) => {
         res.json( token );
     } ).catch( ( err ) => {
