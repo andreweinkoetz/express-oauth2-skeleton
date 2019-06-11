@@ -61,6 +61,8 @@ const getAuthorizationCode = async ( authorizationCode ) => {
 
     const code = await CodeModel.findOne( { authorizationCode } ).populate( 'client' ).exec();
 
+    console.log( code );
+
     return code;
 };
 
