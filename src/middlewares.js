@@ -25,11 +25,11 @@ const obtainToken = ( req, res ) => {
     const request = new Request( req );
     const response = new Response( res );
 
-
+    /*
     console.log( 'REQUEST::::::AUTHORIZE' );
     console.log( request.body );
     console.log( 'REQUEST::::::AUTHORIZE' );
-
+*/
 
     return app.oauth.token( request, response )
         .then( ( token ) => {
