@@ -17,5 +17,5 @@ app.use( '/auth', auth );
 
 mongoose.connect( process.env.MONGODB_URI, { useNewUrlParser: true } ).then( () => {
 // Start server
-    app.listen( process.env.PORT, () => console.log( `Express backend listening on port ${ process.env.PORT }!` ) );
+    app.listen( process.env.PORT, () => console.log( `${ new Date() }: Express backend listening on port ${ process.env.PORT }!` ) );
 } );
