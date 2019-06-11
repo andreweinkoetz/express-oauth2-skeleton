@@ -37,6 +37,11 @@ const authorize = ( req, res ) => {
     const request = new Request( req );
     const response = new Response( res );
 
+    console.log( 'REQUEST::::::' );
+    console.log( req.headers );
+    console.log( req.body );
+    console.log( 'REQUEST::::::' );
+
     return app.oauth.authorize( request, response ).then( ( token ) => {
         res.json( token );
     } ).catch( ( err ) => {
