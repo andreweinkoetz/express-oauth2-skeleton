@@ -26,9 +26,7 @@ const obtainToken = ( req, res ) => {
     const response = new Response( res );
 
     console.log( 'REQUEST::::::OBTAINTOKEN' );
-    console.log( req.headers );
-    console.log( req.body );
-    console.log( req.body.state );
+    console.log( request.query );
     console.log( 'REQUEST::::::OBTAINTOKEN' );
 
     return app.oauth.token( request, response )
@@ -44,7 +42,7 @@ const authorize = ( req, res ) => {
     const response = new Response( res );
 
     console.log( 'REQUEST::::::AUTHORIZE' );
-    console.log( request );
+    console.log( request.query );
     console.log( 'REQUEST::::::AUTHORIZE' );
 
     return app.oauth.authorize( request, response ).then( ( token ) => {
