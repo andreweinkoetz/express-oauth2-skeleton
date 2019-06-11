@@ -31,7 +31,7 @@ const obtainToken = ( req, res ) => {
 
     return app.oauth.token( request, response )
         .then( ( token ) => {
-            console.log( token );
+            console.log( res.url );
             res.json( token );
         } ).catch( ( err ) => {
             res.status( err.code || 500 ).json( err );
