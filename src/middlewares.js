@@ -27,7 +27,7 @@ const obtainToken = ( req, res ) => {
 
 
     console.log( 'REQUEST::::::AUTHORIZE' );
-    console.log( request );
+    console.log( request.body );
     console.log( 'REQUEST::::::AUTHORIZE' );
 
 
